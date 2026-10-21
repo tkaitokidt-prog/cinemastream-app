@@ -26,11 +26,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build APK via Expo CLI
-        run: npx eas-cli build --platform android --profile preview --local --output ./cinemastream-v1.apk
+      - name: Build Local Android App (Expo Prebuild & Bundle)
+        run: |
+          npx expo prebuild --platform android --no-install
+          cd android
+          ./gradlew assembleRelease
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: CinemaStream-V1-APK
-          path: ./cinemastream-v1.apk
+          path: android/app/build/outputs/apk/release/app-release.apk
